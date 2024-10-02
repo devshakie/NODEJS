@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "pnpm": "^9.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "directoryToTree.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
