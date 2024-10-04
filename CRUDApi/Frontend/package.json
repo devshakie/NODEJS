@@ -1,18 +1,17 @@
 {
-  "name": "nodeexercise",
+  "name": "crudapi",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "crud.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "start": "nodemon crud.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "date-fns": "^4.1.0",
-    "nodemon": "^3.1.7",
-    "uuid": "^10.0.0"
+    "node": "^22.9.0",
+    "nodemon": "^3.1.7"
   }
 }
