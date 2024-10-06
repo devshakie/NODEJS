@@ -1,102 +1,113 @@
-import http from 'http';
-import fs from 'fs';
+// Import products
+import products from "./cruddb.js"; // Make sure to have a products database file similar to todos
+import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 
-import productListData from './cruddb.js';
+let productListData = [...products]; // Maintain the state of product data
 
-const setCORSHeaders = (res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-};
-
-const saveToDB = (data) => {
-    fs.writeFileSync('./cruddb.js', `export default ${JSON.stringify(data, null, 2)};`);
-};
-
-// Router function
 const router = async (req, res) => {
     const { url, method } = req;
 
-    setCORSHeaders(res);
-
     const sendJSONResponse = (statusCode, data) => {
-        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Content-Type", "application/json");
         res.writeHead(statusCode);
         res.end(JSON.stringify(data));
-    };
+    }
 
     // GET all products
-    if (url === '/api/products' && method === 'GET') {
-        sendJSONResponse(200, productListData);
+    if (url === "/api/products" && method === "GET") {
+        if (productListData.length > 0) {
+            sendJSONResponse(200, productListData);
+        } else {
+            sendJSONResponse(400, { message: "Products are empty" });
+        }
     }
 
-    // POST (Add new product)
-    else if (url === '/api/products' && method === 'POST') {
-        let body = '';
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-        req.on('end', () => {
-            const { title, price, date, location, company, imageUrl } = JSON.parse(body);
-            const newId = productListData.length + 1;
-            const newProduct = {
-                id: newId,
-                title,
-                price,
-                date,
-                location,
-                company,
-                imageUrl
-            };
-            productListData.push(newProduct);
-            saveToDB(productListData);
-            sendJSONResponse(201, { message: 'Product added', product: newProduct });
-        });
+    // GET a single product by ID
+    else if (url.match(/\/api\/products\/\d+/) && method === "GET") {
+        const id = parseInt(url.split("/")[3]);
+        const product = productListData.find((product) => product.id === id);
+
+        if (product) {
+            sendJSONResponse(200, product);
+        } else {
+            sendJSONResponse(404, { message: "Product not found" });
+        }
     }
 
-    // PUT (Edit product)
-    else if (url.match(/\/api\/products\/\d+/) && method === 'PUT') {
-        const id = parseInt(url.split('/')[3]);
-        let body = '';
-        req.on('data', chunk => {
+    // POST a new product
+    else if (url === '/api/products' && method === "POST") {
+        let body = "";
+        req.on("data", chunk => {
             body += chunk.toString();
         });
-        req.on('end', () => {
-            const { title, price, date, location, company, imageUrl } = JSON.parse(body);
-            const productIndex = productListData.findIndex(product => product.id === id);
 
-            if (productIndex !== -1) {
-                productListData[productIndex] = { ...productListData[productIndex], title, price, date, location, company, imageUrl };
-                saveToDB(productListData);
-                sendJSONResponse(200, { message: 'Product updated', product: productListData[productIndex] });
-            } else {
-                sendJSONResponse(404, { message: 'Product not found' });
+        req.on("end", () => {
+            try {
+                const { title, price, imageUrl } = JSON.parse(body);
+                
+                // Check if product already exists
+                const existingProduct = productListData.find(p => p.title === title);
+                if (existingProduct) {
+                    return sendJSONResponse(400, { message: 'Product with this title already exists' });
+                }
+
+                const newProduct = {
+                    id: uuidv4(), // Generate a unique ID
+                    title,
+                    price,
+                    imageUrl,
+                };
+                productListData.push(newProduct);
+                sendJSONResponse(201, { message: 'New product added', product: newProduct });
+            } catch (error) {
+                sendJSONResponse(400, { message: 'Invalid JSON format' });
             }
         });
     }
 
-    // DELETE product
-    else if (url.match(/\/api\/products\/\d+/) && method === 'DELETE') {
-        const id = parseInt(url.split('/')[3]);
-        const productIndex = productListData.findIndex(product => product.id === id);
+    // PUT to update a specific product
+    else if (url.match(/\/api\/products\/\d+/) && method === "PUT") {
+        const id = parseInt(url.split("/")[3]);
+        let body = "";
+        req.on("data", chunk => {
+            body += chunk.toString();
+        });
+
+        req.on("end", () => {
+            try {
+                const { title, price, imageUrl } = JSON.parse(body);
+                const productIndex = productListData.findIndex((product) => product.id === id);
+
+                if (productIndex !== -1) {
+                    const updatedProduct = { ...productListData[productIndex], title, price, imageUrl };
+                    productListData[productIndex] = updatedProduct;
+                    sendJSONResponse(200, { message: 'Product updated', product: updatedProduct });
+                } else {
+                    sendJSONResponse(404, { message: 'Product not found' });
+                }
+            } catch (error) {
+                sendJSONResponse(400, { message: 'Invalid JSON format' });
+            }
+        });
+    }
+
+    // DELETE a product by ID
+    else if (url.match(/\/api\/products\/\d+/) && method === "DELETE") {
+        const id = parseInt(url.split("/")[3]);
+        const productIndex = productListData.findIndex((product) => product.id === id);
 
         if (productIndex !== -1) {
-            productListData = productListData.filter(product => product.id !== id);
-            saveToDB(productListData);
+            productListData = productListData.filter((product) => product.id !== id);
             sendJSONResponse(200, { message: 'Product deleted' });
         } else {
             sendJSONResponse(404, { message: 'Product not found' });
         }
     }
 
+    // Handle 404 for routes not matched
     else {
         sendJSONResponse(404, { message: 'Route Not Found' });
     }
 };
 
-// Create server
-const server = http.createServer(router);
-server.listen(5000, () => {
-    console.log('Server running on http://localhost:5000');
-});
 export default router;
