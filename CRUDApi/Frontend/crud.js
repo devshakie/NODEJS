@@ -1,5 +1,5 @@
 const addedDataJSON = [];
-let currentProductId = null; // Used to track the current product being edited.
+let currentProductId = null; //track the current item
 
 async function fetchProducts() {
     try {
@@ -49,7 +49,7 @@ function populateProducts() {
     });
 }
 
-// View product functionality
+// View product
 function viewProduct(id) {
     const product = addedDataJSON.find(p => p.id === id);
     
@@ -65,7 +65,7 @@ function viewProduct(id) {
     }
 }
 
-// Open the view product modal
+// view product modal
 function toggleViewProductModal(isOpen) {
     const viewProductModal = document.getElementById("view-product-modal");
     viewProductModal.classList.toggle("active", isOpen);
@@ -77,7 +77,7 @@ function closeViewProductModal() {
     toggleViewProductModal(false);
 }
 
-// Open the edit modal with pre-filled product data
+// Open the edit product modal
 function openEditModal(id) {
     currentProductId = id;
     const product = addedDataJSON.find(p => p.id === id);
@@ -111,7 +111,7 @@ function closeModal() {
 // Open the add product modal
 function openAddProductModal() {
     const addProductModal = document.getElementById("add-product-modal");
-    addProductModal.style.display = "flex"; // Show the modal
+    addProductModal.style.display = "flex"; 
 }
 
 // Close the add product modal and clear fields
@@ -119,7 +119,6 @@ function closeAddProductModal() {
     const addProductModal = document.getElementById("add-product-modal");
     addProductModal.style.display = "none"; // Hide the modal
 
-    // Clear input fields
     document.getElementById("add-title").value = '';
     document.getElementById("add-price").value = '';
     document.getElementById("add-image").value = '';
@@ -150,7 +149,7 @@ async function submitAddProduct() {
     if (response.ok) {
         const newProduct = await response.json();
         console.log('Product added:', newProduct);
-        fetchProducts(); // Refresh the product list
+        fetchProducts(); 
         closeAddProductModal(); // Close the modal after adding the product
     } else {
         console.error('Failed to add product');
@@ -206,5 +205,4 @@ async function deleteProduct(id) {
     }
 }
 
-// Initial fetch on page load
 fetchProducts(); 
