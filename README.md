@@ -8,9 +8,9 @@ Below is a screenshot of a sample get request.
 Below is a screenshot of a sample get by id request.
 ![Task3](./READMEimages/getById.png)
 Below is a screenshot of a sample post request.
-![Task4](./READMEimages/post.png)
+![Task4](./READMEimages/post.png)   
 Below is a screenshot of a sample get request.
-![Task5](./READMEimages/put.png)
+![Task5](./READMEimages/put.png)    
 Below is a screenshot of a sample delete request.
-![Task5](./READMEimages/delete.png)
+![Task5](./READMEimages/delete.png) 
 
