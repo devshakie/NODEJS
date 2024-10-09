@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Luckshakira-Kanana-s-workspace-6oiat3.us-west-2.xata.sh/db/XATA",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
