@@ -7,33 +7,45 @@ This project uses a Xata database to store and manage data for the CRUD API oper
 ### CRUD API Implementation
 The following CRUD operations have been implemented:  
 1. **GET Request**  
+   *Endpoint:* `/api/records`  
    *Description:* Fetches all records from the Xata database table.  
    ![GET Request](./READMEimages/get.png)  
 
 2. **GET by ID Request**  
+   *Endpoint:* `/api/records`  
    *Description:* Fetches a specific record by its ID from the Xata database.  
    ![GET by ID Request](./READMEimages/getById.png)  
 
 3. **POST Request**  
+   *Endpoint:* `/api/records`  
    *Description:* Adds a new record to the Xata database.  
    ![POST Request](./READMEimages/post.png)
 
-3. **PUT Request**  
+4. **PUT Request**  
+   *Endpoint:* `/api/records`  
    *Description:* updates a record already in the Xata database.  
    ![POST Request](./READMEimages/put.png)
 
 5. **DELETE Request**  
+   *Endpoint:* `/api/records`  
    *Description:* Deletes a record from the Xata database.  
    ![DELETE Request](./READMEimages/delete.png)  
    
+### Technologies Used
+- **Node.js**: Backend framework for running JavaScript on the server side.
+- **Xata Database**: Cloud-native database service used for storing and managing data.
+- **JavaScript, TypeScript, HTML, CSS**: For handling API logic and front-end interface where applicable.
+
+### How to Run the Project
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/devshakie/NODEJS.git
    
-![Task2](./READMEimages/get.png)
-Below is a screenshot of a sample get by id request.
-![Task3](./READMEimages/getById.png)
-Below is a screenshot of a sample post request.
-![Task4](./READMEimages/post.png)   
-Below is a screenshot of a sample get request.
-![Task5](./READMEimages/put.png)    
-Below is a screenshot of a sample delete request.
-![Task5](./READMEimages/delete.png) 
+2. Install dependencies:   
+   cd NODEJS
+   npm install
+   
+4. Run the application:
+   npm start
+
 
