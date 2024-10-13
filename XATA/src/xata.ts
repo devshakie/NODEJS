@@ -15,6 +15,7 @@ const tables = [
       { name: "description", type: "text" },
       { name: "price", type: "int" },
       { name: "company", type: "text" },
+      { name: "ID", type: "int", defaultValue: "0" },
     ],
   },
 ] as const;
