@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { checkSchema } from 'express-validator';
+
 import {
   getAllEvents,
   getEventById,
@@ -7,13 +9,13 @@ import {
   patchEvent,
   deleteEvent,
 } from "../controllers/eventControllers";
-import { eventValidator } from "../middlewares/validators/eventValidators";
+import { eventValidatorSchema, validateEvent} from "../middlewares/validators/eventValidators";
 
 const router = Router();
 
 router.get("/", getAllEvents);
 router.get("/:id", getEventById);
-router.post("/", eventValidator, createEvent);
+router.post("/", checkSchema(eventValidatorSchema),validateEvent, createEvent);
 router.put("/:id", updateEvent);
 router.patch("/:id", patchEvent);
 router.delete("/:id", deleteEvent);
